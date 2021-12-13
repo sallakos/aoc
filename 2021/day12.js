@@ -4,13 +4,16 @@ const input = fs
   .split('\n')
   .map(i => i.split('-'))
 
-const connections = []
+const connections = new Map()
 
 const addConnection = (from, to) => {
-  if (connections[from]) {
-    connections[from].push(to)
-  } else {
-    connections[from] = [to]
+  // Don't add start to connections "to" as it should never be visited again
+  if (to !== 'start') {
+    if (connections.has(from)) {
+      connections.get(from).push(to)
+    } else {
+      connections.set(from, [to])
+    }
   }
 }
 
@@ -20,45 +23,7 @@ input.forEach(row => {
   addConnection(to, from)
 })
 
-// Part 1 (some help was needed today)
-
-let search = [['start']]
-let paths = []
-
-// Search through possible paths as long as there are new ones
-while (search.length > 0) {
-  const currentPath = search.pop()
-  const lastInPath = currentPath.at(-1)
-
-  // Path is ready and doesn't need to be seacrhed further
-  if (lastInPath === 'end') {
-    paths.push(currentPath)
-  }
-  // Path not ready and needs to be searched further
-  else {
-    // Loop through all possible extension for path
-    connections[lastInPath].forEach(c => {
-      // If path goes back to start or tries to visit a small cave again,
-      // it should be ignored
-      if (
-        c !== 'start' &&
-        !(c === c.toLowerCase() && currentPath.includes(c))
-      ) {
-        // Add new path to be searched
-        search.push([...currentPath, c])
-      }
-    })
-  }
-}
-
-console.log(`Part 1: there are ${paths.length} possible paths`)
-
-// Part 2
-
-search = [['start']]
-paths = []
-
-const validPath = path => {
+const hasDuplicates = path => {
   const knots = path.filter(
     knot => knot !== 'start' && knot !== 'end' && knot === knot.toLowerCase()
   )
@@ -66,33 +31,32 @@ const validPath = path => {
   new Set(knots).forEach(knot => {
     duplicates.push(knots.filter(k => k === knot).length)
   })
-
-  // Only one knot can be visited twice
-  return (
-    duplicates.every(d => d <= 2) && duplicates.filter(d => d === 2).length <= 1
-  )
+  return duplicates.filter(d => d >= 2).length === 1
 }
 
-while (search.length > 0) {
-  const currentPath = search.pop()
-  const lastInPath = currentPath.at(-1)
-
-  // Path is ready and doesn't need to be seacrhed further
+const getPaths = (paths, path, lastInPath, allowOneTwice) => {
   if (lastInPath === 'end') {
-    paths.push(currentPath)
-  }
-  // Path not ready and needs to be searched further
-  else {
-    connections[lastInPath].forEach(c => {
-      // If path goes back to start it should be ignored
-      if (c !== 'start') {
-        const path = [...currentPath, c]
-        if (validPath(path)) {
-          search.push(path)
-        }
-      }
+    paths.push(path)
+  } else {
+    const possibilities = connections
+      .get(lastInPath)
+      .filter(p =>
+        (allowOneTwice && hasDuplicates(path)) || !allowOneTwice
+          ? !(p === p.toLowerCase() && path.includes(p))
+          : p
+      )
+    possibilities.forEach(p => {
+      // Make a copy of original path so it's not altered
+      getPaths(paths, [...path, p], p, allowOneTwice)
     })
   }
+  return paths
 }
 
-console.log(`Part 2: there are ${paths.length} possible paths`)
+// Part 1
+const possiblePaths1 = getPaths([], ['start'], 'start', false).length
+console.log(`Part 1: there are ${possiblePaths1} possible paths`)
+
+// Part 2
+const possiblePaths2 = getPaths([], ['start'], 'start', true).length
+console.log(`Part 2: there are ${possiblePaths2} possible paths`)
