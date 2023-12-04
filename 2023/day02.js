@@ -1,21 +1,18 @@
-const fs = require('fs')
-const games = fs
-  .readFileSync('./files/02.txt')
-  .toString()
-  .split('\n')
-  .map(l => {
-    const [id, games] = l.split(': ')
-    const g = games.split('; ').map(p =>
-      p.split(', ').map(r => {
-        const s = r.split(' ')
-        return [s[1], parseInt(s[0])]
-      })
-    )
+import { sum, readFileToLines, log } from './utils.js'
 
-    return [parseInt(id.replace('Game ', '')), g.map(q => new Map(q))]
-  })
+const lines = readFileToLines('02')
 
-const sum = array => array.reduce((a, b) => a + b, 0)
+const games = lines.map(l => {
+  const [id, games] = l.split(': ')
+  const g = games.split('; ').map(p =>
+    p.split(', ').map(r => {
+      const s = r.split(' ')
+      return [s[1], parseInt(s[0])]
+    })
+  )
+
+  return [parseInt(id.replace('Game ', '')), g.map(q => new Map(q))]
+})
 
 const maxBlue = 14
 const maxGreen = 13
@@ -54,5 +51,5 @@ games.forEach(game => {
   powers.push(minBlueNeeded * minGreenNeeded * minRedNeeded)
 })
 
-console.log(`Part 1: sum is ${sum(possible)}`)
-console.log(`Part 2: sum is ${sum(powers)}`)
+log(1, `sum`, sum(possible))
+log(2, `sum`, sum(powers))

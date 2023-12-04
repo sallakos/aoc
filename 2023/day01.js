@@ -1,5 +1,6 @@
-const fs = require('fs')
-const lines = fs.readFileSync('./files/01.txt').toString().split('\n')
+import { sum, readFileToLines, log } from './utils.js'
+
+const lines = readFileToLines('01')
 
 const values = lines =>
   lines
@@ -11,11 +12,9 @@ const values = lines =>
     )
     .map(a => a[0] * 10 + a[a.length - 1])
 
-const sum = array => array.reduce((a, b) => a + b, 0)
-
 // Part 1
 
-console.log(`Part 1: sum is ${sum(values(lines))}`)
+log(1, `sum`, sum(values(lines)))
 
 // Part 2
 
@@ -45,4 +44,4 @@ const linesDigitsToNum = lines.map(l => {
   return line
 })
 
-console.log(`Part 2: sum is ${sum(values(linesDigitsToNum))}`)
+log(2, `sum`, sum(values(linesDigitsToNum)))

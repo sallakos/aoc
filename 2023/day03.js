@@ -1,7 +1,5 @@
-const fs = require('fs')
-const lines = fs.readFileSync('./files/03.txt').toString().split('\n')
-
-const sum = array => array.reduce((a, b) => a + b, 0)
+import { sum, readFileToLines, log } from './utils.js'
+const lines = readFileToLines('03')
 
 const partNumbers = []
 const asteriskNumbers = new Map()
@@ -58,11 +56,9 @@ lines.forEach((line, lineIndex) => {
 })
 
 // Part 1
-
-console.log(`Part 1: sum of part numbers is ${sum(partNumbers)}`)
+log(1, `sum of part numbers`, sum(partNumbers))
 
 // Part 2
-
 const gearRatios = []
 
 for (let [coord, numbers] of asteriskNumbers) {
@@ -71,4 +67,4 @@ for (let [coord, numbers] of asteriskNumbers) {
   }
 }
 
-console.log(`Part 2: sum of gear ratios is ${sum(gearRatios)}`)
+log(2, `sum of gear ratios`, sum(gearRatios))
