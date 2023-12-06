@@ -7,6 +7,7 @@ export const readFileToLines = (filename, path) =>
   readFile(filename, path).split('\n')
 
 export const sum = array => array.reduce((a, b) => a + b, 0)
+export const product = array => array.reduce((a, b) => a * b, 1)
 
 export const log = (part, text, value) =>
   console.log(`Part ${part}: ${text} is ${value}`)
@@ -17,5 +18,9 @@ export const getNumbers = array =>
     .filter(e => e)
     .map(a => parseInt(a))
 
-export const logPerformance = (start, end) =>
-  console.log(`took ${Math.round((end - start) * 100) / 100} ms`)
+export const logPerformance = (start, end, seconds) =>
+  console.log(
+    `took ${Math.round(((end - start) / (seconds ? 1000 : 1)) * 100) / 100} ${
+      seconds ? '' : 'm'
+    }s`
+  )
