@@ -9,6 +9,12 @@ export const readFileToLines = (filename, path) =>
 export const sum = array => array.reduce((a, b) => a + b, 0)
 export const product = array => array.reduce((a, b) => a * b, 1)
 
+export const gcd = (a, b) => {
+  if (b === 0) return a
+  return gcd(b, a % b)
+}
+export const lcm = (a, b) => (a * b) / gcd(a, b)
+
 export const log = (part, text, value) =>
   console.log(`Part ${part}: ${text} is ${value}`)
 
