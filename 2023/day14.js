@@ -31,22 +31,27 @@ lines.forEach((l, index) => {
 
 sortByColumn(roundRocks)
 
+const mapToRows = (arr, targetColumn) =>
+  arr.filter(([row, column]) => column === targetColumn).map(([row]) => row)
+
 const tiltNorth = (round, cube) => {
   const newIndices = []
-  round.forEach(([row, column]) => {
-    const cubes = cube
-      .filter(([cRow, cColumn]) => cColumn === column)
-      .map(([cRow]) => cRow)
-    const rounds = newIndices
-      .filter(([cRow, cColumn]) => cColumn === column)
-      .map(([cRow]) => cRow)
+  for (let i = 0; i < LENGTH; i++) {
+    const cubes = mapToRows(cube, i)
+    const origRounds = mapToRows(round, i)
 
-    const lowestPossible = Math.max(
-      Math.max(...cubes.concat(rounds).filter(c => c < row)) + 1,
-      0
-    )
-    newIndices.push([lowestPossible, column])
-  })
+    origRounds.forEach(row => {
+      const lowestPossible = Math.max(
+        Math.max(
+          ...cubes
+            .concat(newIndices.filter(([r, c]) => c === i).map(([r]) => r)) // using mapToRows causes 3-4 seconds slower code, why???
+            .filter(c => c < row)
+        ) + 1,
+        0
+      )
+      newIndices.push([lowestPossible, i])
+    })
+  }
   return newIndices
 }
 
