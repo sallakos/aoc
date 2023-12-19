@@ -113,4 +113,51 @@ const plan = digPlan.map(d => {
   return { direction, amount: parseInt(s.join(''), 16) }
 })
 
-// console.log(plan)
+const coords = [[0, 0]]
+plan.forEach(p => {
+  const prev = coords[coords.length - 1]
+  let newCoord
+  if (p.direction === 'R') {
+    newCoord = [prev[0] + p.amount, prev[1]]
+  }
+  if (p.direction === 'L') {
+    newCoord = [prev[0] - p.amount, prev[1]]
+  }
+  if (p.direction === 'U') {
+    newCoord = [prev[0], prev[1] + p.amount]
+  }
+  if (p.direction === 'D') {
+    newCoord = [prev[0], prev[1] - p.amount]
+  }
+  coords.push(newCoord)
+})
+
+// shoelace theorem
+let area = BigInt(0)
+for (let i = 0; i < coords.length; i++) {
+  if (i !== coords.length - 1) {
+    area += BigInt(coords[i][0] * coords[i + 1][1])
+  } else {
+    area += BigInt(coords[i][0] * coords[0][1])
+  }
+}
+
+for (let i = 0; i < coords.length; i++) {
+  if (i !== coords.length - 1) {
+    area -= BigInt(coords[i + 1][0] * coords[i][1])
+  } else {
+    area -= BigInt(coords[0][0] * coords[i][1])
+  }
+}
+
+area = Math.abs(Number(area / BigInt(2)))
+
+// Pick's theorem: A = i + b/2 - 1 => i = A - b/2 + 1
+const boundary = sum(plan.map(p => p.amount))
+const interiorPoints = area - boundary / 2 + 1
+
+log(
+  2,
+  'amount of cubic meters of lava lagoon can hold',
+  boundary + interiorPoints
+)
