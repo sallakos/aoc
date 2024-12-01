@@ -1,17 +1,17 @@
-import { log, logPerformance, readFileToLines, sum } from './utils.js'
+import { log, logPerformance, readFileToLines, sum } from '../utils.js'
 const lines = readFileToLines('14')
 
 const LENGTH = lines.length
 
-const rotate = original => {
+const rotate = (original) => {
   const rotated = []
-  original.forEach(o => {
+  original.forEach((o) => {
     rotated.push([o[1], LENGTH - 1 - o[0]])
   })
   return rotated
 }
 
-const sortByColumn = arr =>
+const sortByColumn = (arr) =>
   arr.sort((a, b) => {
     if (a[1] === b[1]) {
       return a[0] - b[0]
@@ -40,12 +40,12 @@ const tiltNorth = (round, cube) => {
     const cubes = mapToRows(cube, i)
     const origRounds = mapToRows(round, i)
 
-    origRounds.forEach(row => {
+    origRounds.forEach((row) => {
       const lowestPossible = Math.max(
         Math.max(
           ...cubes
             .concat(newIndices.filter(([r, c]) => c === i).map(([r]) => r)) // using mapToRows causes 3-4 seconds slower code, why???
-            .filter(c => c < row)
+            .filter((c) => c < row)
         ) + 1,
         0
       )
@@ -59,7 +59,7 @@ const tiltNorth = (round, cube) => {
 log(
   1,
   'total load on the north support beams',
-  sum(tiltNorth(roundRocks, cubeRocks).map(r => LENGTH - r[0]))
+  sum(tiltNorth(roundRocks, cubeRocks).map((r) => LENGTH - r[0]))
 )
 
 // Part 2
@@ -104,6 +104,6 @@ const end = performance.now()
 log(
   2,
   'total load on the north support beams after 1 000 000 000 cycles',
-  sum(cycledIndices.map(s => LENGTH - s[0]))
+  sum(cycledIndices.map((s) => LENGTH - s[0]))
 )
 logPerformance(start, end, true)

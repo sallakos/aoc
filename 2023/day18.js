@@ -1,5 +1,5 @@
-import { log, readFileToLines, sum } from './utils.js'
-const digPlan = readFileToLines('18').map(l => {
+import { log, readFileToLines, sum } from '../utils.js'
+const digPlan = readFileToLines('18').map((l) => {
   const [direction, amount, colour] = l.split(' ')
   return { direction, amount: parseInt(amount), colour }
 })
@@ -10,7 +10,7 @@ let y = 0
 
 let indices = []
 
-digPlan.forEach(plan => {
+digPlan.forEach((plan) => {
   let newX = 0
   let newY = 0
 
@@ -44,10 +44,10 @@ digPlan.forEach(plan => {
   }
 })
 
-const minY = Math.min(...indices.map(i => i[0]))
-const minX = Math.min(...indices.map(i => i[1]))
+const minY = Math.min(...indices.map((i) => i[0]))
+const minX = Math.min(...indices.map((i) => i[1]))
 
-indices = indices.map(i => [i[0] + Math.abs(minY), i[1] + Math.abs(minX)])
+indices = indices.map((i) => [i[0] + Math.abs(minY), i[1] + Math.abs(minX)])
 
 indices.sort((a, b) => {
   if (a[0] === b[0]) {
@@ -56,15 +56,17 @@ indices.sort((a, b) => {
   return a[0] - b[0]
 })
 
-const maxX = Math.max(...indices.map(i => i[1])) + 1
-const maxY = Math.max(...indices.map(i => i[0])) + 1
-let grid = Array.apply(null, Array(maxY)).map(s => Array.from('.'.repeat(maxX)))
+const maxX = Math.max(...indices.map((i) => i[1])) + 1
+const maxY = Math.max(...indices.map((i) => i[0])) + 1
+let grid = Array.apply(null, Array(maxY)).map((s) =>
+  Array.from('.'.repeat(maxX))
+)
 
-indices.forEach(i => {
+indices.forEach((i) => {
   grid[i[0]][i[1]] = '#'
 })
 
-grid = grid.map(line => ['.'].concat(line).concat(['.']))
+grid = grid.map((line) => ['.'].concat(line).concat(['.']))
 grid.push(Array.from('.'.repeat(maxX + 2)))
 grid.unshift(Array.from('.'.repeat(maxX + 2)))
 
@@ -86,7 +88,7 @@ while (toCheck.length > 0) {
       }
     }
   }
-  neighbours.forEach(n => (grid[n[0]][n[1]] = 'o'))
+  neighbours.forEach((n) => (grid[n[0]][n[1]] = 'o'))
   toCheck = toCheck.concat(neighbours)
 }
 
@@ -95,11 +97,11 @@ while (toCheck.length > 0) {
 log(
   1,
   'amount of cubic meters of lava lagoon can hold',
-  sum(grid.map(line => line.filter(c => c === '#' || c === '.').length))
+  sum(grid.map((line) => line.filter((c) => c === '#' || c === '.').length))
 )
 
 // Part 2
-const plan = digPlan.map(d => {
+const plan = digPlan.map((d) => {
   const s = d.colour.replace('(#', '').replace(')', '').split('')
   const last = parseInt(s.pop())
   let direction = 'U'
@@ -114,7 +116,7 @@ const plan = digPlan.map(d => {
 })
 
 const coords = [[0, 0]]
-plan.forEach(p => {
+plan.forEach((p) => {
   const prev = coords[coords.length - 1]
   let newCoord
   if (p.direction === 'R') {
@@ -153,7 +155,7 @@ for (let i = 0; i < coords.length; i++) {
 area = Math.abs(Number(area / BigInt(2)))
 
 // Pick's theorem: A = i + b/2 - 1 => i = A - b/2 + 1
-const boundary = sum(plan.map(p => p.amount))
+const boundary = sum(plan.map((p) => p.amount))
 const interiorPoints = area - boundary / 2 + 1
 
 log(

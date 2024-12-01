@@ -1,6 +1,6 @@
-import { log, readFileToLines, sum } from './utils.js'
-const map = readFileToLines('16').map(l =>
-  l.split('').map(c => ({ char: c, beams: [] }))
+import { log, readFileToLines, sum } from '../utils.js'
+const map = readFileToLines('16').map((l) =>
+  l.split('').map((c) => ({ char: c, beams: [] }))
 )
 
 const ROWS = map.length
@@ -8,8 +8,8 @@ const COLUMNS = map[0].length
 
 const runBeams = (beams, origMap) => {
   let i = 0
-  const map = origMap.map(l =>
-    l.map(c => ({ char: c.char, beams: [...c.beams] }))
+  const map = origMap.map((l) =>
+    l.map((c) => ({ char: c.char, beams: [...c.beams] }))
   )
 
   while (i < beams.length) {
@@ -102,7 +102,7 @@ const runBeams = (beams, origMap) => {
     i++
   }
 
-  return sum(map.map(l => l.filter(c => c.beams.length > 0).length))
+  return sum(map.map((l) => l.filter((c) => c.beams.length > 0).length))
 }
 
 // Part 1

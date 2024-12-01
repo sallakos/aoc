@@ -1,5 +1,5 @@
-import { log, logPerformance, readFileToLines } from './utils.js'
-const map = readFileToLines('17').map(l => l.split('').map(Number))
+import { log, logPerformance, readFileToLines } from '../utils.js'
+const map = readFileToLines('17').map((l) => l.split('').map(Number))
 
 const start = performance.now()
 
@@ -10,7 +10,7 @@ const n = [{ coord: [0, 0], dir: undefined, steps: undefined, totalCost: 0 }]
 
 map.forEach((line, row) => {
   line.forEach((value, column) => {
-    ;['u', 'd', 'r', 'l'].forEach(dir => {
+    ;['u', 'd', 'r', 'l'].forEach((dir) => {
       if (
         (row === 0 && dir === 'up') ||
         (row === Y - 1 && dir === 'd') ||
@@ -48,9 +48,9 @@ map.forEach((line, row) => {
 
 const visited = new Map()
 const nodes = new Map()
-n.forEach(n => nodes.set(`${n.coord.toString()},${n.dir},${n.steps}`, n))
+n.forEach((n) => nodes.set(`${n.coord.toString()},${n.dir},${n.steps}`, n))
 
-const getNeighbours = node => {
+const getNeighbours = (node) => {
   const [y, x] = node.coord
   const opposite =
     node.dir === 'u'
@@ -213,7 +213,7 @@ const getNeighbours = node => {
       : []),
   ]
   return arr.filter(
-    n =>
+    (n) =>
       nodes.has(`${n.coord.toString()},${n.dir},${n.steps}`) &&
       n.dir !== opposite &&
       n.steps <= 10
@@ -222,12 +222,12 @@ const getNeighbours = node => {
 
 let unvisitedArr = Array.from(nodes.entries())
   .sort((a, b) => a[1].estimatedCost - b[1].estimatedCost)
-  .filter(a => a[1].estimatedCost !== Infinity)
+  .filter((a) => a[1].estimatedCost !== Infinity)
 
 while (nodes.size > 0) {
   const current = unvisitedArr.shift()
   const neighbours = getNeighbours(current[1])
-  neighbours.forEach(n => {
+  neighbours.forEach((n) => {
     if (!(n.coord[0] === 0 && n.coord[1] === 0)) {
       const prev = nodes.get(`${n.coord.toString()},${n.dir},${n.steps}`)
       if (prev.totalCost > n.totalCost) {
@@ -253,7 +253,7 @@ log(
   2,
   'least possible heat loss for ultra crucible',
   Array.from(visited.values()).filter(
-    v => v.coord[0] === Y - 1 && v.coord[1] === X - 1
+    (v) => v.coord[0] === Y - 1 && v.coord[1] === X - 1
   )[0].totalCost
 )
 

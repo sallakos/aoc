@@ -1,7 +1,7 @@
-import { log, readFileToLines, sum } from './utils.js'
+import { log, readFileToLines, sum } from '../utils.js'
 const originalMap = readFileToLines('11')
 
-const getDistances = coordsArray => {
+const getDistances = (coordsArray) => {
   const distances = []
   for (let i = 0; i < coordsArray.length - 1; i++) {
     const pair1 = coordsArray[i]
@@ -15,7 +15,7 @@ const getDistances = coordsArray => {
   return distances
 }
 
-const getGalaxies = map => {
+const getGalaxies = (map) => {
   const galaxies = []
   for (let row = 0; row < map.length; row++) {
     let col = map[row].indexOf('#')
@@ -28,7 +28,7 @@ const getGalaxies = map => {
 }
 
 // Part 1 (naive approach)
-const expandMapRows = originalMap => {
+const expandMapRows = (originalMap) => {
   const expandedMap = []
   for (let i = 0; i < originalMap.length; i++) {
     if (originalMap[i].replace(/\./g, '').length === 0) {
@@ -39,10 +39,10 @@ const expandMapRows = originalMap => {
   return expandedMap
 }
 
-const rotateMap = originalMap => {
+const rotateMap = (originalMap) => {
   const rotatedMap = []
   for (let i = 0; i < originalMap[0].length; i++) {
-    rotatedMap.push(originalMap.map(l => l.charAt(i)).join(''))
+    rotatedMap.push(originalMap.map((l) => l.charAt(i)).join(''))
   }
   return rotatedMap
 }
@@ -56,7 +56,7 @@ log(1, 'sum of shortest paths', sum(getDistances(expandedGalaxies)))
 const EXPAND = 1000000
 
 const galaxies = new Map(
-  getGalaxies(originalMap).map(galaxy => [
+  getGalaxies(originalMap).map((galaxy) => [
     [galaxy.row, galaxy.col].toString(),
     { row: galaxy.row, col: galaxy.col },
   ])
@@ -72,7 +72,7 @@ for (let row = 0; row < originalMap.length; row++) {
 
 const emptyColumns = []
 for (let column = 0; column < originalMap[0].length; column++) {
-  const galaxyIndex = originalMap.map(row => row.charAt(column)).indexOf('#')
+  const galaxyIndex = originalMap.map((row) => row.charAt(column)).indexOf('#')
   if (galaxyIndex === -1) {
     emptyColumns.push(column)
   }

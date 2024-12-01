@@ -1,14 +1,14 @@
-import { log, logPerformance, readFile, sum } from './utils.js'
+import { log, logPerformance, readFile, sum } from '../utils.js'
 const [wf, p] = readFile('19')
   .split('\n\n')
-  .map(a => a.split('\n'))
+  .map((a) => a.split('\n'))
 
 const workflows = new Map()
-wf.forEach(a => {
+wf.forEach((a) => {
   const [name, ins] = a.replace('}', '').split('{')
   workflows.set(
     name,
-    ins.split(',').map(i => {
+    ins.split(',').map((i) => {
       if (i.includes(':')) {
         const [cond, target] = i.split(':')
         const type = cond.includes('<') ? 'lt' : 'gt'
@@ -30,12 +30,12 @@ wf.forEach(a => {
     })
   )
 })
-const parts = p.map(a =>
+const parts = p.map((a) =>
   a
     .replace('}', '')
     .replace('{', '')
     .split(',')
-    .map(a => {
+    .map((a) => {
       const [char, value] = a.split('=')
       return { [char]: parseInt(value) }
     })
@@ -97,7 +97,7 @@ parts.forEach((part, index) => {
 log(
   1,
   'sum of accepted rating numbers',
-  sum(accepted.map(a => a.x + a.m + a.a + a.s))
+  sum(accepted.map((a) => a.x + a.m + a.a + a.s))
 )
 
 // Part 2
@@ -121,14 +121,14 @@ workflows.forEach((ins, name) => {
 })
 
 let ins = workflows.get('in')
-while (ins.filter(w => w.target).length > 0) {
+while (ins.filter((w) => w.target).length > 0) {
   workflows.set(
     'in',
     ins
-      .map(i => {
+      .map((i) => {
         if (i.target) {
           const toJoin = workflows.get(i.target)
-          const n = toJoin.map(t => {
+          const n = toJoin.map((t) => {
             const allConds = i.cond.concat(t.cond)
             return {
               cond: allConds,
@@ -146,9 +146,9 @@ while (ins.filter(w => w.target).length > 0) {
 
 const accept = workflows
   .get('in')
-  .filter(s => s.status)
-  .map(s => s.cond)
-  .map(acc => {
+  .filter((s) => s.status)
+  .map((s) => s.cond)
+  .map((acc) => {
     const cat = {
       x: { min: 1, max: 4000 },
       m: { min: 1, max: 4000 },
@@ -156,7 +156,7 @@ const accept = workflows
       s: { min: 1, max: 4000 },
     }
 
-    acc.forEach(cond => {
+    acc.forEach((cond) => {
       const { char, type, value } = cond
 
       if (type === 'lt') {

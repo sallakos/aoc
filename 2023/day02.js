@@ -1,17 +1,17 @@
-import { sum, readFileToLines, log } from './utils.js'
+import { sum, readFileToLines, log } from '../utils.js'
 
 const lines = readFileToLines('02')
 
-const games = lines.map(l => {
+const games = lines.map((l) => {
   const [id, games] = l.split(': ')
-  const g = games.split('; ').map(p =>
-    p.split(', ').map(r => {
+  const g = games.split('; ').map((p) =>
+    p.split(', ').map((r) => {
       const s = r.split(' ')
       return [s[1], parseInt(s[0])]
     })
   )
 
-  return [parseInt(id.replace('Game ', '')), g.map(q => new Map(q))]
+  return [parseInt(id.replace('Game ', '')), g.map((q) => new Map(q))]
 })
 
 const maxBlue = 14
@@ -21,12 +21,12 @@ const maxRed = 12
 const possible = []
 const powers = []
 
-games.forEach(game => {
+games.forEach((game) => {
   const [id, games] = game
 
   // Part 1
   const res = games.every(
-    game =>
+    (game) =>
       (game.get('blue') <= maxBlue || !game.has('blue')) &&
       (game.get('red') <= maxRed || !game.has('red')) &&
       (game.get('green') <= maxGreen || !game.has('green'))
@@ -38,7 +38,7 @@ games.forEach(game => {
   let minBlueNeeded = 0
   let minGreenNeeded = 0
 
-  games.forEach(game => {
+  games.forEach((game) => {
     const blue = game.get('blue')
     const green = game.get('green')
     const red = game.get('red')

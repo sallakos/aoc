@@ -1,4 +1,4 @@
-import { sum, readFileToLines, log } from './utils.js'
+import { sum, readFileToLines, log } from '../utils.js'
 const lines = readFileToLines('03')
 
 const partNumbers = []
@@ -23,12 +23,12 @@ lines.forEach((line, lineIndex) => {
           ? numberLength + 1
           : numberLength + 2
       const x = [...Array(arrLength).keys()].map(
-        x => x + Math.max(numberStart - 1, 0)
+        (x) => x + Math.max(numberStart - 1, 0)
       )
       const y = [
         lineIndex === 0 ? 0 : -1,
         lineIndex === lines.length - 1 ? 0 : 1,
-      ].map(y => y + lineIndex)
+      ].map((y) => y + lineIndex)
       for (let yIndex = y[0]; yIndex <= y[1]; yIndex++) {
         for (let xIndex = x[0]; xIndex <= x[x.length - 1]; xIndex++) {
           const char = lines[yIndex].charAt(xIndex)

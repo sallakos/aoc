@@ -6,8 +6,8 @@ export const readFile = (filename, path) =>
 export const readFileToLines = (filename, path) =>
   readFile(filename, path).split('\n')
 
-export const sum = array => array.reduce((a, b) => a + b, 0)
-export const product = array => array.reduce((a, b) => a * b, 1)
+export const sum = (array) => array.reduce((a, b) => a + b, 0)
+export const product = (array) => array.reduce((a, b) => a * b, 1)
 
 export const gcd = (a, b) => {
   if (b === 0) return a
@@ -18,11 +18,11 @@ export const lcm = (a, b) => (a * b) / gcd(a, b)
 export const log = (part, text, value) =>
   console.log(`Part ${part}: ${text} is ${value}`)
 
-export const getNumbers = array =>
+export const getNumbers = (array) =>
   array
     .split(' ')
-    .filter(e => e)
-    .map(a => parseInt(a))
+    .filter((e) => e)
+    .map((a) => parseInt(a))
 
 export const logPerformance = (start, end, seconds) =>
   console.log(

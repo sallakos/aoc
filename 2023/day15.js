@@ -1,7 +1,7 @@
-import { log, readFile, sum } from './utils.js'
+import { log, readFile, sum } from '../utils.js'
 const steps = readFile('15').split(',')
 
-const hash = string => {
+const hash = (string) => {
   let value = 0
   for (let i = 0; i < string.length; i++) {
     const ascii = string.charCodeAt(i)
@@ -11,12 +11,12 @@ const hash = string => {
 }
 
 // Part 1
-log(1, 'sum of hash results', sum(steps.map(s => hash(s))))
+log(1, 'sum of hash results', sum(steps.map((s) => hash(s))))
 
 // Part 2
 const boxes = new Map()
 
-steps.forEach(s => {
+steps.forEach((s) => {
   const split = Math.max(s.indexOf('='), s.indexOf('-'))
   const label = s.substring(0, split)
   const box = hash(label)

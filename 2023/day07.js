@@ -1,4 +1,4 @@
-import { log, sum, readFileToLines } from './utils.js'
+import { log, sum, readFileToLines } from '../utils.js'
 const lines = readFileToLines('07')
 
 const cardOrder1 = [
@@ -33,7 +33,7 @@ const cardOrder2 = [
   'A',
 ]
 
-const sortGames = arr =>
+const sortGames = (arr) =>
   arr.sort((a, b) => {
     if (a.rank === b.rank) {
       return a.value - b.value
@@ -41,10 +41,11 @@ const sortGames = arr =>
     return b.rank - a.rank
   })
 
-const getSum = arr => sum(arr.map((g, index) => parseInt(g.bid) * (index + 1)))
+const getSum = (arr) =>
+  sum(arr.map((g, index) => parseInt(g.bid) * (index + 1)))
 
 // Check hand rank
-const check = hand => {
+const check = (hand) => {
   const handSet = new Set(hand)
   const unique = handSet.size
 
@@ -55,7 +56,9 @@ const check = hand => {
   const handArr = hand.split('')
   if (unique === 2) {
     if (
-      [...handSet].some(char => handArr.filter(c => c === char).length === 4)
+      [...handSet].some(
+        (char) => handArr.filter((c) => c === char).length === 4
+      )
     ) {
       return 2 // four of a kind
     }
@@ -64,7 +67,9 @@ const check = hand => {
 
   if (unique === 3) {
     if (
-      [...handSet].some(char => handArr.filter(c => c === char).length === 3)
+      [...handSet].some(
+        (char) => handArr.filter((c) => c === char).length === 3
+      )
     ) {
       return 4 // three of a kind
     }
@@ -79,7 +84,7 @@ const check = hand => {
 }
 
 // Make best rank if hand has jokers
-const makeBestHand = hand => {
+const makeBestHand = (hand) => {
   const otherCards = hand.replace(/J/g, '').split('')
   const jokers = 5 - otherCards.length
   const uniqueSet = new Set(otherCards)
@@ -97,7 +102,7 @@ const makeBestHand = hand => {
       return 2 // four of a kind
     }
     // AAABJ, AABBJ, ABBBJ
-    if (uniqueArr.some(c => otherCards.filter(d => d === c).length === 3)) {
+    if (uniqueArr.some((c) => otherCards.filter((d) => d === c).length === 3)) {
       return 2 // four of a kind
     }
     return 3 // full house
@@ -119,11 +124,11 @@ const makeBestHand = hand => {
 
 const mapGames = (games, jokers) =>
   sortGames(
-    games.map(line => {
+    games.map((line) => {
       const [hand, bid] = line.split(' ')
       const value = hand
         .split('')
-        .map(c => (jokers ? cardOrder2 : cardOrder1).indexOf(c).toString(16))
+        .map((c) => (jokers ? cardOrder2 : cardOrder1).indexOf(c).toString(16))
         .join('')
 
       const hasJokers = jokers && hand.indexOf('J') > -1

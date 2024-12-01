@@ -1,11 +1,11 @@
-import { log, logPerformance, readFileToLines } from './utils.js'
+import { log, logPerformance, readFileToLines } from '../utils.js'
 const lines = readFileToLines('22')
 
 let bricks = lines
-  .map(l => l.split('~').map(p => p.split(',').map(Number)))
+  .map((l) => l.split('~').map((p) => p.split(',').map(Number)))
   .sort((a, b) => Math.min(a[0][2], a[1][2]) - Math.min(b[0][2], b[1][2]))
 
-bricks = bricks.map(b => {
+bricks = bricks.map((b) => {
   const between = []
   if (b[0][0] !== b[1][0]) {
     for (
@@ -40,19 +40,19 @@ bricks = bricks.map(b => {
 const taken = new Set()
 
 const fallBricks = (bricks, taken) => {
-  return bricks.map(b => {
-    if (Math.min(...b.map(c => c[2])) === 1) {
-      b.forEach(c => taken.add(c.toString()))
+  return bricks.map((b) => {
+    if (Math.min(...b.map((c) => c[2])) === 1) {
+      b.forEach((c) => taken.add(c.toString()))
       return b
     } else {
-      let o = b.map(c => [...c])
+      let o = b.map((c) => [...c])
       while (true) {
-        const fallen = o.map(c => [c[0], c[1], c[2] - 1])
-        if (fallen.map(c => c.toString()).some(c => taken.has(c))) {
-          o.forEach(c => taken.add(c.toString()))
+        const fallen = o.map((c) => [c[0], c[1], c[2] - 1])
+        if (fallen.map((c) => c.toString()).some((c) => taken.has(c))) {
+          o.forEach((c) => taken.add(c.toString()))
           break
-        } else if (fallen.some(c => c[2] === 1)) {
-          fallen.forEach(c => taken.add(c.toString()))
+        } else if (fallen.some((c) => c[2] === 1)) {
+          fallen.forEach((c) => taken.add(c.toString()))
           o = fallen
           break
         } else {
@@ -71,17 +71,18 @@ let wouldFall = 0
 
 fallenBricks.forEach((brick, i) => {
   const bricksAbove = fallenBricks
-    .map(f => f.map(c => [...c]))
+    .map((f) => f.map((c) => [...c]))
     .filter(
-      a => Math.min(...a.map(c => c[2])) > Math.min(...brick.map(c => c[2]))
+      (a) =>
+        Math.min(...a.map((c) => c[2])) > Math.min(...brick.map((c) => c[2]))
     )
   const takenAbove = new Set(taken)
 
-  brick.forEach(c => {
+  brick.forEach((c) => {
     takenAbove.delete(c.toString())
   })
-  bricksAbove.forEach(b =>
-    b.forEach(c => {
+  bricksAbove.forEach((b) =>
+    b.forEach((c) => {
       takenAbove.delete(c.toString())
     })
   )

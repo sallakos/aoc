@@ -1,14 +1,14 @@
-import { log, readFile, sum } from './utils.js'
+import { log, readFile, sum } from '../utils.js'
 const patterns = readFile('13')
   .split('\n\n')
-  .map(p => p.split('\n'))
+  .map((p) => p.split('\n'))
 
 const patternsWithReflection = []
 
-const rotatePattern = pattern => {
+const rotatePattern = (pattern) => {
   const rotatedPattern = []
   for (let i = 0; i < pattern[0].length; i++) {
-    rotatedPattern.push(pattern.map(l => l.charAt(i)).join(''))
+    rotatedPattern.push(pattern.map((l) => l.charAt(i)).join(''))
   }
   return rotatedPattern
 }
@@ -54,7 +54,7 @@ const loop = (pattern, value) => {
   return value
 }
 
-patterns.forEach(pattern => {
+patterns.forEach((pattern) => {
   const rotatedPattern = rotatePattern(pattern)
 
   const horizontal = loop(pattern, 0)
@@ -127,7 +127,7 @@ const smudgeLoop = (pattern, value, prevValue) => {
   return value
 }
 
-patternsWithReflection.forEach(patternObj => {
+patternsWithReflection.forEach((patternObj) => {
   const { pattern: origPattern, horizontal, vertical } = patternObj
   let pattern = [...origPattern]
 

@@ -1,5 +1,5 @@
-import { log, logPerformance, readFileToLines } from './utils.js'
-const map = readFileToLines('23').map(l => l.split(''))
+import { log, logPerformance, readFileToLines } from '../utils.js'
+const map = readFileToLines('23').map((l) => l.split(''))
 
 const Y = map.length
 const X = map[0].length
@@ -24,7 +24,7 @@ const getNeighbours = (point, slopes) => {
       if (y < Y - 1) n.push([y + 1, x])
       if (x > 0) n.push([y, x - 1])
       if (x < X - 1) n.push([y, x + 1])
-      n = n.filter(a => map[a[0]][a[1]] !== '#')
+      n = n.filter((a) => map[a[0]][a[1]] !== '#')
     } else if (map[y][x] === '>') {
       n = [[y, x + 1]]
     } else if (map[y][x] === '^') {
@@ -40,7 +40,7 @@ const getNeighbours = (point, slopes) => {
     if (y < Y - 1) n.push([y + 1, x])
     if (x > 0) n.push([y, x - 1])
     if (x < X - 1) n.push([y, x + 1])
-    n = n.filter(a => map[a[0]][a[1]] !== '#')
+    n = n.filter((a) => map[a[0]][a[1]] !== '#')
     return n
   }
 }
@@ -53,17 +53,17 @@ const finalPathsWithSlopes = []
 
 while (paths.size > 0) {
   let newPaths = []
-  paths.forEach(path => {
+  paths.forEach((path) => {
     const last = path.last
     if (last.toString() === end.toString()) {
       finalPathsWithSlopes.push(path.points.size)
     } else {
       const neighbours = getNeighbours(last, true).filter(
-        n => !path.points.has(n.toString())
+        (n) => !path.points.has(n.toString())
       )
       const newPoints = new Set(path.points)
       newPoints.add(last.toString())
-      neighbours.forEach(n => {
+      neighbours.forEach((n) => {
         const newPath = { points: newPoints, last: n }
         newPaths.push(newPath)
       })
@@ -79,7 +79,7 @@ while (paths.size > 0) {
       }
     }
   }
-  toRemove.forEach(r => paths.delete(r))
+  toRemove.forEach((r) => paths.delete(r))
 }
 
 const endTiming = performance.now()

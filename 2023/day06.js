@@ -1,7 +1,7 @@
-import { getNumbers, log, product, readFileToLines } from './utils.js'
+import { getNumbers, log, product, readFileToLines } from '../utils.js'
 const lines = readFileToLines('06')
 
-const getDistances = time => {
+const getDistances = (time) => {
   const distances = []
   for (let wait = 0; wait <= time; wait++) {
     const speed = wait
@@ -12,19 +12,19 @@ const getDistances = time => {
 }
 
 // Part 1 (brute force)
-const [times, recordDistances] = lines.map(l =>
+const [times, recordDistances] = lines.map((l) =>
   getNumbers(l.substring(l.indexOf(':') + 1))
 )
 
-const options = times.map(time => getDistances(time))
+const options = times.map((time) => getDistances(time))
 const betterThanRecords = options.map(
-  (o, index) => o.filter(d => d > recordDistances[index]).length
+  (o, index) => o.filter((d) => d > recordDistances[index]).length
 )
 
 log(1, 'product of ways to beat record', product(betterThanRecords))
 
 // Part 2 (solve equation)
-const [time, recordDistance] = lines.map(l =>
+const [time, recordDistance] = lines.map((l) =>
   parseInt(l.substring(l.indexOf(':') + 1).replace(/\s/g, ''))
 )
 

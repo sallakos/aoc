@@ -1,16 +1,16 @@
-import { sum, readFileToLines, log } from './utils.js'
+import { sum, readFileToLines, log } from '../utils.js'
 
 const lines = readFileToLines('01')
 
-const values = lines =>
+const values = (lines) =>
   lines
-    .map(t =>
+    .map((t) =>
       t
         .split('')
-        .map(l => parseInt(l))
-        .filter(n => !isNaN(n))
+        .map((l) => parseInt(l))
+        .filter((n) => !isNaN(n))
     )
-    .map(a => a[0] * 10 + a[a.length - 1])
+    .map((a) => a[0] * 10 + a[a.length - 1])
 
 // Part 1
 
@@ -30,7 +30,7 @@ const writtenDigits = new Map([
   ['nine', 9],
 ])
 
-const linesDigitsToNum = lines.map(l => {
+const linesDigitsToNum = lines.map((l) => {
   let line = l
   writtenDigits.forEach((value, key) => {
     // Replace written digit with value plus first and last character in case of overlaps,

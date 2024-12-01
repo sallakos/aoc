@@ -1,13 +1,13 @@
-import { sum, readFileToLines, log } from './utils.js'
+import { sum, readFileToLines, log } from '../utils.js'
 const lines = readFileToLines('04')
 
-const getNumbers = array =>
+const getNumbers = (array) =>
   array
     .split(' ')
-    .filter(e => e)
-    .map(a => parseInt(a))
+    .filter((e) => e)
+    .map((a) => parseInt(a))
 
-const cards = lines.map(line => {
+const cards = lines.map((line) => {
   const [winningNumbers, ownNumbers] = line
     .substring(line.indexOf(':') + 2)
     .split(' | ')
@@ -18,14 +18,14 @@ const cards = lines.map(line => {
 })
 
 const matchingNumbers = cards.map(
-  card =>
+  (card) =>
     card.ownNumbers
-      .map(number => card.winningNumbers.has(number))
-      .filter(n => n).length
+      .map((number) => card.winningNumbers.has(number))
+      .filter((n) => n).length
 )
 
 // Part 1
-const points = matchingNumbers.map(number => (number ? 2 ** (number - 1) : 0))
+const points = matchingNumbers.map((number) => (number ? 2 ** (number - 1) : 0))
 log(1, `sum of points`, sum(points))
 
 // Part 2

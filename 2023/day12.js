@@ -1,6 +1,6 @@
-import { log, logPerformance, readFileToLines, sum } from './utils.js'
+import { log, logPerformance, readFileToLines, sum } from '../utils.js'
 const records = readFileToLines('12')
-const expandedRecords = records.map(record => {
+const expandedRecords = records.map((record) => {
   const [string, groups] = record.split(' ')
   return `${[string, string, string, string, string].join('?')} ${[
     groups,
@@ -57,10 +57,10 @@ const possibilities = records.map((record, index) => {
   const [string, groups] = record.split(' ')
   const groupsArr = groups.split(',').map(Number)
   const possibleStrings = replaceFirst(string, groupsArr, index)
-  const groupLengths = possibleStrings.map(string =>
+  const groupLengths = possibleStrings.map((string) =>
     getGroupLengths(string).toString()
   )
-  return groupLengths.filter(group => group === groups).length
+  return groupLengths.filter((group) => group === groups).length
 })
 const end1 = performance.now()
 
@@ -74,7 +74,7 @@ const possibilities2 = expandedRecords.map((record, index) => {
   const groupsArr = groups.split(',').map(Number)
 
   let possibleStrings = [{ string: origString, amount: 1 }]
-  const qMarks = origString.split('').filter(c => c === '?').length
+  const qMarks = origString.split('').filter((c) => c === '?').length
   let i = 1
 
   while (i <= qMarks) {
@@ -125,12 +125,12 @@ const possibilities2 = expandedRecords.map((record, index) => {
     const group = new Map()
 
     newToCheck
-      .map(s => ({
+      .map((s) => ({
         string:
           i < qMarks ? s.string.substring(0, s.string.indexOf('?')) : s.string,
         amount: s.amount,
       }))
-      .forEach(s => {
+      .forEach((s) => {
         const grouplLengths = getGroupLengths(s.string)
         const glString = grouplLengths
           .toString()
@@ -143,7 +143,7 @@ const possibilities2 = expandedRecords.map((record, index) => {
         }
       })
 
-    possibleStrings = Array.from(group.values()).map(s => ({
+    possibleStrings = Array.from(group.values()).map((s) => ({
       string: s.string.concat(origString.substring(s.string.length)),
       amount: s.amount,
     }))
@@ -152,8 +152,8 @@ const possibilities2 = expandedRecords.map((record, index) => {
 
   return sum(
     possibleStrings
-      .filter(s => getGroupLengths(s.string).toString() === groups)
-      .map(s => s.amount)
+      .filter((s) => getGroupLengths(s.string).toString() === groups)
+      .map((s) => s.amount)
   )
 })
 const end2 = performance.now()

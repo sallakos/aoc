@@ -1,9 +1,9 @@
-import { lcm, log, logPerformance, readFileToLines, sum } from './utils.js'
+import { lcm, log, logPerformance, readFileToLines, sum } from '../utils.js'
 const lines = readFileToLines('20')
 
 const modules = new Map()
 
-lines.forEach(l => {
+lines.forEach((l) => {
   let [mod, outputs] = l.split(' -> ')
   const t = outputs.split(', ')
   let type
@@ -22,7 +22,7 @@ lines.forEach(l => {
 })
 
 modules.forEach((t, mod) => {
-  t.outputs.forEach(tar => {
+  t.outputs.forEach((tar) => {
     const m = modules.get(tar)
     if (m) {
       const i = [...m.inputs]
@@ -49,7 +49,7 @@ const modulesToWatch = {
 let high = 0
 let low = 0
 
-const pressButton = i => {
+const pressButton = (i) => {
   low++
   let outputs = [{ target: 'broadcaster', pulse: 'low', from: 'button' }]
 
@@ -59,7 +59,7 @@ const pressButton = i => {
     let targets = m ? m.outputs : []
     let pulse
     if (
-      Object.keys(modulesToWatch).some(mtw => mtw === mod.target) &&
+      Object.keys(modulesToWatch).some((mtw) => mtw === mod.target) &&
       mod.pulse === 'low' &&
       modulesToWatch[mod.target] === undefined
     ) {
@@ -80,7 +80,9 @@ const pressButton = i => {
       }
     } else if (m && m.type === '&') {
       m.memory[mod.from] = mod.pulse
-      pulse = Object.values(m.memory).every(v => v === 'high') ? 'low' : 'high'
+      pulse = Object.values(m.memory).every((v) => v === 'high')
+        ? 'low'
+        : 'high'
       if (pulse === 'high') {
         high += targets.length
       } else {
@@ -89,12 +91,12 @@ const pressButton = i => {
     }
 
     targets = targets
-      .map(t => ({
+      .map((t) => ({
         target: t,
         pulse,
         from: mod.target,
       }))
-      .filter(t => t.pulse)
+      .filter((t) => t.pulse)
 
     outputs.push(...targets)
   }
@@ -102,7 +104,7 @@ const pressButton = i => {
 
 let thousand
 let i = 1
-while (Object.values(modulesToWatch).filter(e => e).length < 4 || i <= 1000) {
+while (Object.values(modulesToWatch).filter((e) => e).length < 4 || i <= 1000) {
   pressButton(i)
   if (i === 1000) thousand = high * low
   i++

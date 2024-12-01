@@ -1,7 +1,7 @@
-import { getNumbers, log, readFileToLines } from './utils.js'
+import { getNumbers, log, readFileToLines } from '../utils.js'
 const lines = readFileToLines('24')
 
-const hailstones = lines.map(l => {
+const hailstones = lines.map((l) => {
   const [p, v] = l.split(' @ ')
   const position = p.split(', ').map(Number)
   const velocity = getNumbers(v.replace(','))
@@ -47,6 +47,6 @@ log(
   1,
   'number of intersections that occur within test area',
   intersections.filter(
-    a => max >= a[0] && a[0] >= min && max >= a[1] && a[1] >= min
+    (a) => max >= a[0] && a[0] >= min && max >= a[1] && a[1] >= min
   ).length
 )
