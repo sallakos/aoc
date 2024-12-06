@@ -1,21 +1,19 @@
-import { readFileToLines, sum, log, logPerformance } from '../utils.js'
+import { readFileToLines, log, logPerformance } from '../utils.js'
 
 const origMap = readFileToLines('06')
   .map((line) => line.split(''))
   .map((line) => line.map((c) => ({ char: c, visitedFrom: [] })))
 
-let map, y, x, direction, dirIndex, loop
+let map, y, x, dirIndex, loop
 
 const returnToOriginal = () => {
   map = [
     ...origMap.map((l) => [
-      ...l.map((o) => ({ char: o.char, visitedFrom: [...o.visitedFrom] })),
+      ...l.map((o) => ({ char: o.char, visitedFrom: [] })),
     ]),
   ]
   map[startY][startX].char = 'X'
-  map[startY][startX].visitedFrom = []
   dirIndex = 0
-  direction = directions[dirIndex]
   y = startY
   x = startX
   loop = false
@@ -30,9 +28,7 @@ const isNotObstacle = (y, x) => map[y][x].char !== '#'
 
 const directions = ['up', 'right', 'down', 'left']
 
-const atomicMove = (coordY, coordX) => {
-  let newY = coordY
-  let newX = coordX
+const atomicMove = (newY, newX) => {
   if (newY < 0 || newY >= map.length) {
     y = null
     return
@@ -52,21 +48,20 @@ const atomicMove = (coordY, coordX) => {
     x = newX
   } else {
     dirIndex = (dirIndex + 1) % 4
-    direction = directions[dirIndex]
   }
 }
 
 const move = () => {
-  if (direction === 'up') {
+  if (directions[dirIndex] === 'up') {
     atomicMove(y - 1, x)
   }
-  if (direction === 'right') {
+  if (directions[dirIndex] === 'right') {
     atomicMove(y, x + 1)
   }
-  if (direction === 'down') {
+  if (directions[dirIndex] === 'down') {
     atomicMove(y + 1, x)
   }
-  if (direction === 'left') {
+  if (directions[dirIndex] === 'left') {
     atomicMove(y, x - 1)
   }
 }
@@ -78,9 +73,17 @@ while (x && y) {
   move()
 }
 
-const visited = sum(charMap(map).map((l) => l.filter((c) => c === 'X').length))
+const visited = map
+  .map((line, lineIndex) =>
+    line
+      .map((c, columnIndex) =>
+        c.char === 'X' ? [lineIndex, columnIndex] : null
+      )
+      .filter(Boolean)
+  )
+  .flat()
 
-log(1, 'Number of distinct positions visited', visited)
+log(1, 'Number of distinct positions visited', visited.length)
 
 // Part 2
 returnToOriginal()
@@ -88,20 +91,18 @@ let numberOfLoops = 0
 
 const start = performance.now()
 
-for (let lineIndex = 0; lineIndex < map.length; lineIndex++) {
-  for (let columnIndex = 0; columnIndex < map[0].length; columnIndex++) {
-    if (map[lineIndex][columnIndex].char === '.') {
-      map[lineIndex][columnIndex].char = '#'
-      while (x && y && !loop) {
-        move()
-        if (loop) {
-          numberOfLoops++
-        }
+visited.forEach(([lineIndex, columnIndex]) => {
+  if (map[lineIndex][columnIndex].char === '.') {
+    map[lineIndex][columnIndex].char = '#'
+    while (x && y && !loop) {
+      move()
+      if (loop) {
+        numberOfLoops++
       }
-      returnToOriginal()
     }
+    returnToOriginal()
   }
-}
+})
 
 const end = performance.now()
 
