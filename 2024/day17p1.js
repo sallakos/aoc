@@ -25,19 +25,7 @@ const combo = (n) => {
   }
 }
 
-let program = p
-  .map((n, index) =>
-    index % 2 === 0
-      ? {
-          index,
-          opcode: n,
-          operand: p[index + 1],
-          comboOperand: combo(p[index + 1]),
-        }
-      : null
-  )
-  .filter(Boolean)
-
+let program
 const updateProgram = () => {
   program = p
     .map((n, index) =>
@@ -52,6 +40,7 @@ const updateProgram = () => {
     )
     .filter(Boolean)
 }
+updateProgram()
 
 const output = []
 let pointer = 0
